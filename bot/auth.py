@@ -2,7 +2,7 @@ import logging
 from typing import Union
 from pyrogram import Client
 from pyrogram.types import Message, CallbackQuery
-from ..common.local import bl_users, known_group, known_user_ids
+from share.common.local import bl_users, known_group, known_user_ids  # noqa
 
 
 def ensure_auth(func):

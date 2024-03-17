@@ -5,7 +5,7 @@ from typing import Union
 from common.data import pwd  # noqa
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
-from .data import url_regex, USER_AGENT
+from share.common.data import url_regex, USER_AGENT  # noqa
 
 
 def trimmer(data: Union[dict, list]):
@@ -52,11 +52,18 @@ def find_url(text: str):
 
 # run this before commit
 # for aesthetic purpose
+
+ignored_paths = [
+    'archive',
+    'share'
+]
+
+
 def sort_imports(path: str = pwd):
     # python_files = [i for i in os.listdir() if i.endswith('.py')]
     for root, dirs, files in os.walk(path):
         for file in files:
-            if 'archive' not in root and file.endswith('.py'):
+            if not any(p in root for p in ignored_paths) and file.endswith('.py'):
                 sort_import(os.path.join(root, file))
 
 
