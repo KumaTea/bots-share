@@ -1,5 +1,5 @@
 import logging
-from share.common.tools import get_url_int_set  # , get_url_str_set  # noqa
+from share.tools import get_url_int_set  # , get_url_str_set  # noqa
 
 
 LOCAL_URL = 'https://hm.lan.kmtea.eu'

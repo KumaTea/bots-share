@@ -5,7 +5,7 @@ from typing import Union
 from common.data import pwd  # noqa
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
-from share.common.data import url_regex, USER_AGENT  # noqa
+from share.data import url_regex, USER_AGENT  # noqa
 
 
 def trimmer(data: Union[dict, list]):
