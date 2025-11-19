@@ -1,4 +1,4 @@
-import logging
+from bot.session import logging  # noqa
 from share.tools import get_url_int_set  # , get_url_str_set  # noqa
 
 

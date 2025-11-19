@@ -138,8 +138,19 @@ def process_text(text: str) -> str:
     return text
 
 
+class MySet(set):
+    def __init__(self):
+        super().__init__()
+
+    def append(self, item):
+        self.add(item)
+
+    def extend(self, items):
+        self.update(items)
+
+
 def get_url_int_set(url: str) -> set[int]:
-    int_set = set()
+    int_set = MySet()
     text = get_url_text(url)
     for line in text.splitlines():
         num_text = process_text(line)
@@ -150,7 +161,7 @@ def get_url_int_set(url: str) -> set[int]:
 
 
 def get_url_str_set(url: str) -> set[str]:
-    str_set = set()
+    str_set = MySet()
     text = get_url_text(url)
     for line in text.splitlines():
         str_text = process_text(line)

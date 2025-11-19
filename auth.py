@@ -1,6 +1,7 @@
 import logging
 from typing import Union
 from pyrogram import Client
+from bot.session import is_old_pyrogram
 from pyrogram.types import Message, CallbackQuery
 from share.local import bl_users, known_group, known_user_ids  # noqa
 
@@ -48,8 +49,12 @@ def ensure_auth(func):
                 return None
 
         # forwards
-        if msg.forward_from:
-            user_id = msg.forward_from.id
+        if is_old_pyrogram:
+            forward_from = msg.forward_from
+        else:
+            forward_from = msg.forward_origin.sender_user if msg.forward_origin else None
+        if forward_from:
+            user_id = forward_from.id
             if user_id in bl_users:
                 logging.debug(f'Forwarded user {user_id} is in blacklist! Ignoring message.')
                 return None
