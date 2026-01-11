@@ -55,13 +55,16 @@ def find_url(text: str):
 
 ignored_paths = [
     'archive',
-    'share'
+    'share',
+    '.venv',
+    '__pycache__'
 ]
 
 
 def sort_imports(path: str = pwd):
     # python_files = [i for i in os.listdir() if i.endswith('.py')]
     for root, dirs, files in os.walk(path):
+        # exclude .venv and __pycache__
         for file in files:
             if not any(p in root for p in ignored_paths) and file.endswith('.py'):
                 sort_import(os.path.join(root, file))
@@ -74,7 +77,7 @@ def sort_import(file):
 
     imports = []
     for line in lines:
-        if line.startswith('import ') or line.startswith('from '):
+        if (line.startswith('import ') or line.startswith('from ')) and not line.strip().endswith('('):
             imports.append(line)
         else:
             break
