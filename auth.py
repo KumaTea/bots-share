@@ -2,8 +2,8 @@ import logging
 from typing import Union
 from pyrogram import Client
 from share.common import is_old_pyrogram  # noqa
-from share.local import bl_users, known_group, known_user_ids  # noqa
 from pyrogram.types import Message, CallbackQuery, MessageOriginUser
+from share.local import bl_users, known_group, known_user_ids, trusted_group  # noqa
 
 
 def ensure_auth(func):
@@ -17,10 +17,15 @@ def ensure_auth(func):
         else:
             msg = obj
 
-        # detect unknown group
-        if msg.chat and msg.chat.id < 0 and msg.chat.id not in known_group:
-            logging.warning(f'Chat id={msg.chat.id} name={msg.chat.title} not known!')
-            known_group.add(msg.chat.id)
+
+        if msg.chat and msg.chat.id < 0:
+            # detect unknown group
+            if msg.chat.id not in known_group:
+                logging.warning(f'Chat id={msg.chat.id} name={msg.chat.title} not known!')
+                known_group.add(msg.chat.id)
+            # allow known groups
+            elif msg.chat.id in trusted_group:
+                return await func(client, obj)
 
         # users
         if msg.from_user:
